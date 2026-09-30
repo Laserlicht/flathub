@@ -1,4 +1,3 @@
-# SPDX-License-Identifier: MIT
 app-id: io.github.openlf2.OpenLF2
 runtime: org.freedesktop.Platform
 runtime-version: '26.08'
@@ -31,6 +30,7 @@ modules:
         url: https://luajit.org/git/luajit.git
         commit: c6ffc141a8762b41703f9287d63d93622a13dd8f
         disable-shallow-clone: true
+
   - name: openlf2
     buildsystem: cmake-ninja
     builddir: true
@@ -40,18 +40,17 @@ modules:
     post-install:
       - install -Dm644 /app/share/doc/openlf2/LICENSE /app/share/licenses/openlf2/LICENSE
     sources:
-      # Build the current checkout, including uncommitted changes.
-      - type: dir
-        path: ..
-        skip:
-          - .git
-          - .flatpak-builder
-          - build
-          - out
-          - orig
-          - local
-          - __pycache__
-          - CMakeUserPresets.json
+      - type: archive
+        url: https://github.com/OpenLF2/OpenLF2/archive/refs/tags/v0.9.0.tar.gz
+        sha256: 8a01478086fa136ec93ab934a0c507073a45b6992f219251d4a2b0f147bac491
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/OpenLF2/OpenLF2/releases/latest
+          version-query: .tag_name | sub("^v"; "")
+          url-query: '"https://github.com/OpenLF2/OpenLF2/archive/refs/tags/" + .tag_name + ".tar.gz"'
+          timestamp-query: .published_at
+          is-main-source: true
+
   - name: lf2-extra-data
     buildsystem: simple
     build-commands:
@@ -69,7 +68,6 @@ modules:
       - type: script
         dest-filename: apply_extra
         commands:
-          # The engine reads the installer as an archive; no extraction is needed.
           - chmod 644 LF2_v2.0a.exe
       - type: script
         dest-filename: openlf2-launch
