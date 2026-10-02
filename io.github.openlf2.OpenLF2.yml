@@ -40,15 +40,13 @@ modules:
     post-install:
       - install -Dm644 /app/share/doc/openlf2/LICENSE /app/share/licenses/openlf2/LICENSE
     sources:
-      - type: archive
-        url: https://github.com/OpenLF2/OpenLF2/archive/refs/tags/v0.9.0.tar.gz
-        sha256: 8a01478086fa136ec93ab934a0c507073a45b6992f219251d4a2b0f147bac491
+      - type: git
+        url: https://github.com/OpenLF2/OpenLF2.git
+        tag: v0.9.1
+        commit: 56e4a47e412673e6563dad95ceb5c0e5e800cb62
         x-checker-data:
-          type: json
-          url: https://api.github.com/repos/OpenLF2/OpenLF2/releases/latest
-          version-query: .tag_name | sub("^v"; "")
-          url-query: '"https://github.com/OpenLF2/OpenLF2/archive/refs/tags/" + .tag_name + ".tar.gz"'
-          timestamp-query: .published_at
+          type: git
+          tag-pattern: ^v([\d.]+)$
           is-main-source: true
 
   - name: lf2-extra-data
