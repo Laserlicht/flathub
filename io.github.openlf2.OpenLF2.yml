@@ -11,6 +11,7 @@ finish-args:
   - --socket=pulseaudio
   - --device=dri
   - --device=input
+  - --device-if=all:!has-input-device
 cleanup:
   - /include
   - /lib/pkgconfig
